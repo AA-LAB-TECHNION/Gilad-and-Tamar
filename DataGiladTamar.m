@@ -7,11 +7,11 @@ infmt = 'hh:mm:ss.SSS';
 
 filename = 0; % 1 for choosing the file interactively
 if filename == 0
-    filenameG = 'data/28-4-2021_17-05-45-652.txt';
-    filenameT = 'data/Take 2021-05-05 04.36.50 PM_001.csv';
+    filenameG = '../data/28-4-2021_17-05-45-652.txt';
+    filenameT = '../data/Take 2021-05-05 04.36.50 PM_001.csv';
 else
-    filenameG = uigetfile('data/*.txt');
-    filenameT = uigetfile('data/*.csv');
+    filenameG = uigetfile('../data/*.txt');
+    filenameT = uigetfile('../data/*.csv');
     % adding a path: [filename, path] = uigetfile('../data/*.txt'); 
 end
 
@@ -102,7 +102,7 @@ else
     %    %     end
 end
 %% saving mat
-save('data/mat.mat','mat');
+save('../data/mat.mat','mat');
 %% figures
 figure;
 subplot(321); plot(mat(:,1),mat(:,2)); xlabel('time [s]'); ylabel('a_{x}');
