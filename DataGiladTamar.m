@@ -4,9 +4,19 @@ clc;
 %function [mat] = DataGiladTamar(DataGilad,DataTamar,TstartGilad,TstartTamar)
 outfmt = 'hh:mm:ss.SSS';
 infmt = 'hh:mm:ss.SSS';
-DataGilad = readmatrix('28-4-2021_17-05-45-652.txt'); %28-4-2021_16-08-16-471.txt
+filename = 0; % 1 for choosing the file interactively
+if filename == 0
+    filenameG = '28-4-2021_17-05-45-652.txt';
+    filenameT = 'Take 2021-05-05 04.36.50 PM_001.csv';
+else
+    [filenameG = uigetfile('*.txt');
+    [filenameT] = uigetfile('*.csv');
+    % adding a path: [filename, path] = uigetfile('../Data/*.txt'); 
+end
+
+DataGilad = readmatrix(filenameG); %28-4-2021_16-08-16-471.txt
 TstartGilad = duration('16:08:16.471','InputFormat',infmt,'Format',outfmt);
-DataTamar = table2array(readtable('Take 2021-05-05 04.36.50 PM_001.csv')); %Take 2021-04-28 04.08.15 PM.csv
+DataTamar = table2array(readtable(filenameT)); %Take 2021-04-28 04.08.15 PM.csv
 DataTamar = DataTamar(:,(~isnan(DataTamar(1,:))));   % for nan - columns
 TstartTamar = duration('16:08:15.381','InputFormat',infmt,'Format',outfmt);
 
@@ -90,7 +100,10 @@ else
     %    plot(mat(:,8),mat(:,11:3:end)-mat(1,11:3:end)); xlabel('time [s]'); ylabel('Z displacement [mm]');
     %    %     end
 end
- 
+%% saving mat
+save('mat.mat',mat);
+
+%% figures
 figure;
 subplot(321); plot(mat(:,1),mat(:,2)); xlabel('time [s]'); ylabel('a_{x}');
 subplot(322); plot(mat(:,1),mat(:,3)); xlabel('time [s]'); ylabel('a_{y}');
@@ -100,7 +113,7 @@ subplot(325); plot(mat(:,1),mat(:,6)); xlabel('time [s]'); ylabel('g_{y}');
 subplot(326); plot(mat(:,1),mat(:,7)); xlabel('time [s]'); ylabel('g_{z}');
 figure;
 plot(mat(:,1),mat(:,8:3:end));
-% fft
+    % fft
 for i = [1:10]
     y(:,i) = mat(TstartT_new:end,5+3*i);
     y1_norm = (y(:,i)-y(1,i))./y(1,i);
