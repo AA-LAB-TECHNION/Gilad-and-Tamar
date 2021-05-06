@@ -4,14 +4,15 @@ clc;
 %function [mat] = DataGiladTamar(DataGilad,DataTamar,TstartGilad,TstartTamar)
 outfmt = 'hh:mm:ss.SSS';
 infmt = 'hh:mm:ss.SSS';
+
 filename = 0; % 1 for choosing the file interactively
 if filename == 0
-    filenameG = '28-4-2021_17-05-45-652.txt';
-    filenameT = 'Take 2021-05-05 04.36.50 PM_001.csv';
+    filenameG = 'data/28-4-2021_17-05-45-652.txt';
+    filenameT = 'data/Take 2021-05-05 04.36.50 PM_001.csv';
 else
-    [filenameG = uigetfile('*.txt');
-    [filenameT] = uigetfile('*.csv');
-    % adding a path: [filename, path] = uigetfile('../Data/*.txt'); 
+    filenameG = uigetfile('data/*.txt');
+    filenameT = uigetfile('data/*.csv');
+    % adding a path: [filename, path] = uigetfile('../data/*.txt'); 
 end
 
 DataGilad = readmatrix(filenameG); %28-4-2021_16-08-16-471.txt
@@ -101,8 +102,7 @@ else
     %    %     end
 end
 %% saving mat
-save('mat.mat',mat);
-
+save('data/mat.mat','mat');
 %% figures
 figure;
 subplot(321); plot(mat(:,1),mat(:,2)); xlabel('time [s]'); ylabel('a_{x}');
