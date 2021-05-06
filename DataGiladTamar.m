@@ -4,7 +4,9 @@ clc;
 %function [mat] = DataGiladTamar(DataGilad,DataTamar,TstartGilad,TstartTamar)
 outfmt = 'hh:mm:ss.SSS';
 infmt = 'hh:mm:ss.SSS';
-
+%%
+newfilename = "test2";
+mkdir (["../data/"+newfilename])
 filename = 0; % 1 for choosing the file interactively
 if filename == 0
     filenameG = '../data/28-4-2021_17-05-45-652.txt';
@@ -50,6 +52,7 @@ if i == 0
         
     [EIrowG,EIcolG] = size(DataGilad);
     [EIrowT,EIcolT] = size(DataTamar);
+    markers = (EIcolT - 1)/3;
     if EIrowG > EIrowT
         r = EIrowG;
     else
@@ -101,8 +104,6 @@ else
     %    plot(mat(:,8),mat(:,11:3:end)-mat(1,11:3:end)); xlabel('time [s]'); ylabel('Z displacement [mm]');
     %    %     end
 end
-%% saving mat
-save('../data/mat.mat','mat');
 %% figures
 figure;
 subplot(321); plot(mat(:,1),mat(:,2)); xlabel('time [s]'); ylabel('a_{x}');
@@ -135,3 +136,24 @@ for i = [1:10]
     ylabel('|P1(f)|')
     xlim([0,40]);
 end
+
+%% data to Tomer
+for i = [1:markers]
+    row1(2*i - 1:2*i) = ["Curve "+num2str(i),""];
+    row2(2*i - 1:2*i) = ["",""];
+    row3(2*i - 1:2*i) = ["Standard\Function\Function class","Time"];
+    row4(2*i - 1:2*i) = ["Standard\Function\Point id","input:Z"];
+    row5(2*i - 1:2*i) = ["Standard\Function\Sample frequency","240 Hz"];
+    row6(2*i - 1:2*i) = ["",""];
+    mat_tomer(2:length(mat)+1,2*i-1) = mat(:,1);
+    mat_tomer(2:length(mat)+1,2*i) = mat(:,3*i + 5);
+%     VariableNames(2*i-1:2*i) =["Time"+num2str(i),"z"+num2str(i)] ;
+    Names(2*i - 1:2*i) =["Time","z"+num2str(i)];
+end
+% mat_tomer(:,21:27) = mat(:,1:7);
+% for i = [1:length(mat_lomer)]
+TomersTable = array2table([row1; row2; row3; row4; row5; row6; Names; mat_tomer]);
+%% saving 
+save("../data/"+newfilename+"/mat.mat",'mat');
+writetable(TomersTable,"../data/"+newfilename +"/TomersTable.xlsx",'WriteVariableNames',false); 
+
