@@ -1,5 +1,5 @@
 clear;
-close;
+close all;
 clc;
 %function [mat] = DataGiladTamar(DataGilad,DataTamar,TstartGilad,TstartTamar)
 %%
@@ -69,21 +69,21 @@ DataTamar = DataTamar(:,(~isnan(DataTamar(1,:))));   % for nan - columns
     mat(1:EIrowT,EIcolG+1:EIcolT+EIcolG-1) =  DataTamar(:,2:end);
 
 %% figures
-figure;
+figure(1);
 subplot(321); plot(mat(:,1),mat(:,2)); xlabel('time [s]'); ylabel('a_{x}');
 subplot(322); plot(mat(:,1),mat(:,3)); xlabel('time [s]'); ylabel('a_{y}');
 subplot(323); plot(mat(:,1),mat(:,4)); xlabel('time [s]'); ylabel('a_{z}');
 subplot(324); plot(mat(:,1),mat(:,5)); xlabel('time [s]'); ylabel('g_{x}');
 subplot(325); plot(mat(:,1),mat(:,6)); xlabel('time [s]'); ylabel('g_{y}');
 subplot(326); plot(mat(:,1),mat(:,7)); xlabel('time [s]'); ylabel('g_{z}');
-figure;
+figure(2);
 plot(mat(:,1),mat(:,8:3:end));
     % fft
 if isempty(TstartT_new)
     TstartT_new = 1;
 end
 % TstartT_new = TstartT_new*(~isempty(TstartT_new)) + 1;        
-figure;
+figure(3);
 for i = [1:10]
     y(:,i) = mat(TstartT_new:end,5+3*i);
     y1_norm = (y(:,i)-y(1,i))./y(1,i);
@@ -126,4 +126,6 @@ TomersTable = array2table([row1; row2; row3; row4; row5; row6; row7; Names; mat_
 %% saving 
 save("../data/"+newfilename+"/mat.mat",'mat');
 writetable(TomersTable,"../data/"+newfilename +"/TomersTable.xlsx",'WriteVariableNames',false); 
-
+saveas(figure(1),"../data/"+newfilename+"/fig1.png");
+saveas(figure(2),"../data/"+newfilename+"/fig2.png");
+saveas(figure(3),"../data/"+newfilename+"/fig3.png");
