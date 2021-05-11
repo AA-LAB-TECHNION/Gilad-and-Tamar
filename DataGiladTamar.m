@@ -77,7 +77,7 @@ subplot(324); plot(mat(:,1),mat(:,5)); xlabel('time [s]'); ylabel('g_{x}');
 subplot(325); plot(mat(:,1),mat(:,6)); xlabel('time [s]'); ylabel('g_{y}');
 subplot(326); plot(mat(:,1),mat(:,7)); xlabel('time [s]'); ylabel('g_{z}');
 figure(2);
-plot(mat(:,1),mat(:,8:3:end));
+plot(mat(:,1),mat(:,8:3:end)); xlabel('time [s]'); ylabel('Z displacement');
     % fft
 if isempty(TstartT_new)
     TstartT_new = 1;
